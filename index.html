@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color-picker</title>
+    <link rel="stylesheet" href="colorjoe/colorjoe.css">
+    <script src="colorjoe/colorjoe.min.js"></script>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgb(231, 231, 231);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        body h1{
+            padding: 1rem 0px;
+        }
+        .footer{
+            padding: 1rem 0px;
+        }
+        .colorPicker{
+            border: none;
+            background: none;
+            margin: 0;
+        }
+        .colorPicker .oned{
+                margin-right: 0;
+        }
+        .container{
+            width: 40%;
+            display: flex;
+            background-color: rgb(255, 255, 255);
+            padding: 2rem 2rem;
+        }
+        .config{
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        .config-title{
+            text-align: center;
+            padding: 15px 0px;
+            font-weight: bold;
+        }
+        .selected-color-text{
+              text-align: center;
+              font-weight :600;
+        }
+        .selected-color , .saved-color{
+            height: 15px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .saved-color:not(:last-of-type){
+                   margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        Color Picker
+    </h1>
+      <div class="container">
+          <div class="colorjoe">
+              
+          </div>
+          <div class="config">
+              <div class="config-title">
+                  Selected-color
+              </div>
+              <div class="selected-color-text">
+                  #009578
+              </div>
+              <div class="selected-color">
+              </div>
+
+              <div class="config-title">
+                Saved-color
+              </div>
+              <div class="saved-color"></div>
+              <div class="saved-color"></div>
+              <div class="saved-color"></div>
+              <div class="saved-color"></div>
+              <div class="saved-color"></div>
+          </div>
+
+      </div>
+      <section id="footer" class="footer">
+                developed by @aditya verma
+      </section>
+
+       <script>
+        //   const cj = colorjoe.rgb(document.querySelector(".colorjoe"));
+
+          class ColorPicker{
+              constructor(root){
+                  this.root = root;
+                  this.colorjoe = colorjoe.rgb(this.root.querySelector(".colorjoe"));
+                   this.savedColors = this.getSavedColors;
+
+                  this.colorjoe.show();
+                  this.setSelectedColor("#009578");
+
+
+                  this.colorjoe.on("change" , color =>{
+                      this.setSelectedColor(color.hex() , true);
+                  } )
+
+
+                  this.root.querySelectorAll(".saved-color").forEach((e1 , i)=>{
+                      this.showSavedColor(e1 , this.savedColors[i]);
+                  });
+              }
+              setSelectedColor(color , skipCjUpdate = false){
+                  this.selectedColor = color;
+                  this.root.querySelector(".selected-color-text").textContent = color;
+                  this.root.querySelector(".selected-color").style.background = color;
+
+                  if(!skipCjUpdate){
+                      this.colorjoe.set(color);
+                  }
+
+              }
+              getSavedColors(){
+                  return ["#fffff" , "#316c60" , "#fffff","#fffff","#fffff"];
+              }
+              showSavedColor(element , color){
+                  element.style.background = color;
+                  element.dataset.color = color;
+              }
+          }
+          const cp = new ColorPicker(document.querySelector(".container"));
+      </script>
+</body>
+</html>
